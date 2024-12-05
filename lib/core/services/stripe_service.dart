@@ -2,6 +2,7 @@ import 'package:checkout/core/network/api_endpoints.dart';
 import 'package:checkout/core/network/api_service.dart';
 import 'package:checkout/features/data/models/payment_intent/payment_intent_input_model.dart';
 import 'package:checkout/features/data/models/payment_intent/payment_intent_model.dart';
+import 'package:checkout/features/data/models/payment_item_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -39,5 +40,17 @@ class StripeService {
   //Create displayPaymentSheet
   Future<void> displayPaymentSheet() async {
     await Stripe.instance.presentPaymentSheet();
+  }
+
+  //Create MakePayment method
+  Future<void> makePayment({
+    required PaymentIntentInputModel paymentIntentInputModel,
+  }) async {
+    var paymentIntentModel = await createPaymentIntent(
+      paymentIntentInputModel: paymentIntentInputModel,
+    );
+    await initPaymentSheet(
+        paymentIntentClientSecret: paymentIntentModel.clientSecret);
+    await displayPaymentSheet();
   }
 }
