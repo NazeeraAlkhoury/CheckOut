@@ -35,4 +35,9 @@ class StripeService {
       ),
     );
   }
+
+  //Create displayPaymentSheet
+  Future<void> displayPaymentSheet() async {
+    await Stripe.instance.presentPaymentSheet();
+  }
 }
