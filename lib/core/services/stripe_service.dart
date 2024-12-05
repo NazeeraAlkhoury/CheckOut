@@ -4,6 +4,7 @@ import 'package:checkout/features/data/models/payment_intent/payment_intent_inpu
 import 'package:checkout/features/data/models/payment_intent/payment_intent_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeService {
   ApiServices apiServices = ApiServices();
@@ -21,5 +22,17 @@ class StripeService {
     PaymentIntentModel paymentIntentModel =
         PaymentIntentModel.fromJson(response.data);
     return paymentIntentModel;
+  }
+
+  //craete initPaymentSheet method
+  Future<void> initPaymentSheet({
+    required String paymentIntentClientSecret,
+  }) async {
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        merchantDisplayName: 'Nazeera Alkhouri',
+        paymentIntentClientSecret: paymentIntentClientSecret,
+      ),
+    );
   }
 }
